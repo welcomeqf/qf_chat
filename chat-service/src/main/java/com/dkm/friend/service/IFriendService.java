@@ -1,0 +1,50 @@
+package com.dkm.friend.service;
+
+import com.dkm.friend.entity.bo.FriendAllListBo;
+import com.dkm.friend.entity.bo.FriendBo;
+import com.dkm.friend.entity.vo.FriendAllListVo;
+import com.dkm.friend.entity.vo.FriendVo;
+
+import java.util.List;
+
+/**
+ * @author qf
+ * @date 2020/5/11
+ * @vesion 1.0
+ **/
+public interface IFriendService {
+
+   /**
+    * 成为好友
+    * @param vo
+    */
+   void insertFriend (FriendVo vo);
+
+   /**
+    *  删除好友
+    * @param toId 要删除的人的id
+    */
+   void deleteFriend (Long toId);
+
+   /**
+    * 展示全部好友
+    * @return 所有好友信息
+    */
+   List<FriendAllListVo> listAllFriend ();
+
+
+   /**
+    *  根据用户Id搜索用户信息以及好友情况
+    * @param id 用户Id
+    * @return 用户以及好友信息
+    */
+   FriendBo querySolrInfo (Long id);
+
+   /**
+    *  修改对好友的备注
+    * @param remark 好友备注
+    * @param id  好友的id
+    */
+   void updateFriendRemark (String remark, Long id);
+
+}
