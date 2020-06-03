@@ -57,7 +57,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
    @Autowired
    private RedisConfig redisConfig;
 
-   private final String REDIS_LOCK = "REDIS::Lock:Friend";
+   private final String REDIS_LOCK = "REDIS::Lock:Chat::Friend";
 
    /**
     * 成为好友
