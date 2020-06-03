@@ -74,8 +74,8 @@ public class FileServiceImpl implements IFileService {
             String newPath = path.toString() + extraName;
             File toFile = fileUtils.multipartFileToFile(file,newPath);
             FileVo vo = new FileVo();
-//            String url = fileUrl + "/" + fileName.substring(0, 8) + "/"  + fileName + extraName;
-            String url = fileLocalUrl + fileName.substring(0, 8) + "/"  + fileName + extraName;
+            String url = fileUrl + "/" + fileName.substring(0, 8) + "/"  + fileName + extraName;
+//            String url = fileLocalUrl + fileName.substring(0, 8) + "/"  + fileName + extraName;
             vo.setFileUrl(url);
             return vo;
          } catch (Exception e) {

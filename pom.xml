@@ -5,6 +5,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>chat-common</module>
+        <module>chat-service</module>
+        <module>chat-server</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

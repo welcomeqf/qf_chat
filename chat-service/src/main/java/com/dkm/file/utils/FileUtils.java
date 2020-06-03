@@ -81,8 +81,7 @@ public class FileUtils {
    }
 
    public Path name2Path(String fileName) {
-      String fileStorePath = "D:\\lol";
-//      String fileStorePath = "/root/tax-img";
+      String fileStorePath = "E:\\img/chat-img";
       return Paths.get(fileStorePath, fileName.substring(0, 8), fileName);
    }
 

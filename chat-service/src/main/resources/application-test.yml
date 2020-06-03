@@ -27,10 +27,10 @@ spring:
 
 # 图片上传地址
 file:
-  url: http://192.168.10.133:8304/chat-service/img
+  url: http://192.168.10.133:20000/chat/img
   localUrl: http://192.168.10.93:20000/img/
     #  前端地址   二维码地址
   qrCodeUrl: http://www.baidu.com
   # 默认头像地址
-  heardUrl: http://192.168.10.93:20000/img/timg.jpg
+  heardUrl: http://192.168.10.133:20000/chat/img/timg.jpg
 

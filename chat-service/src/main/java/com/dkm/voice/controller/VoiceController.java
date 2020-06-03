@@ -1,5 +1,6 @@
 package com.dkm.voice.controller;
 
+import com.dkm.jwt.islogin.CheckToken;
 import com.dkm.voice.server.VoiceServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/voice")
 public class VoiceController {
 
-//   @Autowired
-//   private VoiceServer voiceServer;
-//
-//   @GetMapping("/getVoice")
-//   public void getVoice () {
-//      voiceServer.run();
-//   }
+   @GetMapping("/getVoice")
+   @CheckToken
+   public void getVoice () {
+      System.out.println("111");
+   }
 }
