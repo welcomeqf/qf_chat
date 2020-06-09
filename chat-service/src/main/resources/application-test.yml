@@ -32,5 +32,5 @@ file:
     #  前端地址   二维码地址
   qrCodeUrl: http://www.baidu.com
   # 默认头像地址
-  heardUrl: http://192.168.10.133:20000/chat/img/timg.jpg
+  heardUrl: http://192.168.10.133:20000/chat/img/2020.jpg
 

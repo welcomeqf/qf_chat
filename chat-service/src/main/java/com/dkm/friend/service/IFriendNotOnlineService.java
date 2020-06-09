@@ -29,7 +29,7 @@ public interface IFriendNotOnlineService {
     *  更改未读状态
     * @param list id集合
     */
-   void updateLook (List<Long> list);
+   void deleteLook (List<Long> list);
 
    /**
     * 删除所有已读的消息

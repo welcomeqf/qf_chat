@@ -21,10 +21,14 @@ import com.dkm.user.entity.vo.UserUpdateInfoVo;
 import com.dkm.user.entity.vo.UserVo;
 import com.dkm.user.service.IUserService;
 import com.dkm.user.vilidata.CreateToken;
+import com.dkm.user.vilidata.MyMessagePostProcessor;
 import com.dkm.utils.IdGenerator;
 import com.dkm.utils.ShaUtils;
 import com.dkm.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -156,8 +160,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             rabbitTemplate.convertAndSend("msg_fanoutExchange","",JSON.toJSONString(msgInfo));
          }
 
-         //更改离线表中的未读状态
-         friendNotOnlineService.updateLook(longList);
+         //删除离线表中的未读状态
+         friendNotOnlineService.deleteLook(longList);
 
       } else {
          //没有离线消息,
@@ -169,7 +173,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             MsgInfo msgInfo = new MsgInfo();
             msgInfo.setType(100);
             msgInfo.setCid(cid);
-
             rabbitTemplate.convertAndSend("msg_fanoutExchange","",JSON.toJSONString(msgInfo));
          }
 

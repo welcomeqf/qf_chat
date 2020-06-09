@@ -18,22 +18,12 @@ public class RabbitMqConfig {
 
    @Bean
    public Queue getQueue () {
-      return new Queue ("msg_queue_");
-   }
-
-   @Bean
-   public Queue getWebQueue () {
-      return new Queue("msg_chat_queue");
-   }
-
-   @Bean
-   public Queue getNotOnlineQueue () {
-      return new Queue("msg_not_online_queue");
+      return new Queue ("msg_queue_",false);
    }
 
    @Bean
    public FanoutExchange getFanoutExchange () {
-      return new FanoutExchange("msg_fanoutExchange");
+      return new FanoutExchange("msg_fanoutExchange",false,false);
    }
 
    @Bean

@@ -20,5 +20,5 @@ public interface FriendNotOnlineMapper extends IBaseMapper<FriendNotOnline> {
     * @param list id集合
     * @return 返回结果
     */
-   Integer updateLook(List<Long> list);
+   Integer deleteLook(List<Long> list);
 }
