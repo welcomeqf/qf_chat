@@ -1,5 +1,6 @@
 package com.dkm.friend.service;
 
+import com.dkm.friend.entity.Friend;
 import com.dkm.friend.entity.bo.FriendAllListBo;
 import com.dkm.friend.entity.bo.FriendBo;
 import com.dkm.friend.entity.vo.FriendAllListVo;
@@ -46,5 +47,13 @@ public interface IFriendService {
     * @param id  好友的id
     */
    void updateFriendRemark (String remark, Long id);
+
+   /**
+    *  查询一条数据
+    * @param fromId 谁
+    * @param toId 谁的好友
+    * @return 好友记录
+    */
+   Friend queryOne (Long fromId, Long toId);
 
 }

@@ -36,7 +36,7 @@ import java.util.List;
  **/
 @Component
 @Slf4j
-@RabbitListener(queues = "msg_queue_")
+@RabbitListener(queues = "chat_msg_queue_")
 public class RabbitMqListener {
 
    @Autowired

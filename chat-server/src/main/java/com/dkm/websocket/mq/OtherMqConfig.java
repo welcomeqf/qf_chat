@@ -15,11 +15,11 @@ public class OtherMqConfig {
 
    @Bean
    public Queue getWebQueue () {
-      return new Queue("msg_chat_queue",false);
+      return new Queue("chat_msg_chat_queue",false);
    }
 
    @Bean
    public Queue getNotOnlineQueue () {
-      return new Queue("msg_not_online_queue",false);
+      return new Queue("chat_msg_not_online_queue",false);
    }
 }

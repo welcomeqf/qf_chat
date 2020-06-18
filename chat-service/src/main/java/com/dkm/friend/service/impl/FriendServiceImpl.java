@@ -237,4 +237,13 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
          throw new ApplicationException(CodeType.SERVICE_ERROR, "修改失败");
       }
    }
+
+   @Override
+   public Friend queryOne(Long fromId, Long toId) {
+
+      LambdaQueryWrapper<Friend> wrapper = new LambdaQueryWrapper<Friend>()
+            .eq(Friend::getFromId,fromId)
+            .eq(Friend::getToId, toId);
+      return baseMapper.selectOne(wrapper);
+   }
 }

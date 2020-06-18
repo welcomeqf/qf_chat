@@ -1,7 +1,5 @@
 package com.dkm;
 
-import com.dkm.aop.beans.Aspect;
-import com.dkm.voice.server.VoiceServer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

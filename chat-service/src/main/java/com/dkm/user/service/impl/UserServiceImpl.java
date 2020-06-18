@@ -75,6 +75,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
    @Value("${file.heardUrl}")
    private String heardUrl;
 
+   @Value("${file.womanHeardUrl}")
+   private String womanHeardUrl;
+
    @Autowired
    private IFriendNotOnlineService friendNotOnlineService;
 
@@ -98,8 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
       User user = new User();
       Long userId = idGenerator.getNumberId();
       user.setId(userId);
-      //默认头像
-      user.setHeadUrl(heardUrl);
+
       user.setNickName(userVo.getNickName());
       user.setUserName(userVo.getUserName());
       user.setPassword(ShaUtils.getSha1(userVo.getPassword()));
@@ -107,6 +109,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
       FileVo qrCode = fileService.getQrCode(qrCodeUrl + "?userId=" + userId);
       user.setQrCode(qrCode.getFileUrl());
       user.setSex(userVo.getSex());
+
+      if (userVo.getSex() == 1) {
+         //男
+         //默认头像
+         user.setHeadUrl(heardUrl);
+      } else {
+         //女
+         user.setHeadUrl(womanHeardUrl);
+      }
 
       int insert = baseMapper.insert(user);
 
@@ -157,7 +168,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             msgInfo.setType(onlineVo.getType());
             //将消息更改成已读
             longList.add(onlineVo.getToId());
-            rabbitTemplate.convertAndSend("msg_fanoutExchange","",JSON.toJSONString(msgInfo));
+            rabbitTemplate.convertAndSend("chat_msg_fanoutExchange","",JSON.toJSONString(msgInfo));
          }
 
          //删除离线表中的未读状态
@@ -173,7 +184,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             MsgInfo msgInfo = new MsgInfo();
             msgInfo.setType(100);
             msgInfo.setCid(cid);
-            rabbitTemplate.convertAndSend("msg_fanoutExchange","",JSON.toJSONString(msgInfo));
+            rabbitTemplate.convertAndSend("chat_msg_fanoutExchange","",JSON.toJSONString(msgInfo));
          }
 
       }
@@ -296,7 +307,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
          msgInfo.setType(102);
          msgInfo.setCid(cid);
 
-         rabbitTemplate.convertAndSend("msg_fanoutExchange","",JSON.toJSONString(msgInfo));
+         rabbitTemplate.convertAndSend("chat_msg_fanoutExchange","",JSON.toJSONString(msgInfo));
 
          redisTemplate.delete(user.getId());
       }

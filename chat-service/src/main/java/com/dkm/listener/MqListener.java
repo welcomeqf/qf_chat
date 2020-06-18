@@ -27,7 +27,7 @@ import java.util.List;
  **/
 @Slf4j
 @Component
-@RabbitListener(queues = "msg_chat_queue")
+@RabbitListener(queues = "chat_msg_chat_queue")
 public class MqListener {
 
    @Autowired
@@ -66,7 +66,7 @@ public class MqListener {
       //将消息传给客户端
       //此处也要重新申明交换机，不然生产者找不到交换机
       //广播形式发给所有服务器
-      rabbitTemplate.convertAndSend("msg_fanoutExchange","",msgInfo);
+      rabbitTemplate.convertAndSend("chat_msg_fanoutExchange","",msgInfo);
 
       //确认消息
       try {

@@ -23,10 +23,6 @@ import org.springframework.stereotype.Component;
 @ChannelHandler.Sharable
 public class TextWebSocketHandle extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
-
-   @Autowired
-   private RabbitTemplate rabbitTemplate;
-
    private final Integer type = 103;
 
    @Override
@@ -47,7 +43,9 @@ public class TextWebSocketHandle extends SimpleChannelInboundHandler<TextWebSock
          if (msgInfo.getType() != 2) {
             log.info("收到一个非心跳消息");
             if (msgInfo.getType().equals(type)) {
-               rabbitTemplate.convertAndSend("msg_chat_queue", JSON.toJSONString(msgInfo));
+               //直接返回给前端
+               //取消前端加好友的红点
+               channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(msgInfo)));
             }
          }
 
