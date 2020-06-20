@@ -23,6 +23,11 @@ public class ManyChat extends Model<ManyChat> {
    private Long id;
 
    /**
+    * 群头像
+    */
+   private String headUrl;
+
+   /**
     * 群聊名字
     */
    private String manyName;

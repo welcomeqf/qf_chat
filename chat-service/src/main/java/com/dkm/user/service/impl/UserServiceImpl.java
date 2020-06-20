@@ -266,6 +266,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     */
    @Override
    public List<FriendAllListVo> queryAllFriend(List<IdVo> list) {
+
+      if (null == list || list.size() == 0) {
+         return null;
+      }
+
       return baseMapper.queryAllFriend(list);
    }
 

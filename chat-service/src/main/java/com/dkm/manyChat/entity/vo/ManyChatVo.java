@@ -18,6 +18,11 @@ public class ManyChatVo {
    private String manyName;
 
    /**
+    * 群聊头像
+    */
+   private String manyHeadUrl;
+
+   /**
     * 用户id集合
     */
    private List<Long> list;

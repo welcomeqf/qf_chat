@@ -2,9 +2,16 @@ package com.dkm.listener;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.dkm.config.RedisConfig;
 import com.dkm.entity.websocket.MsgInfo;
+import com.dkm.listener.vo.ChatVo;
+import com.dkm.manyChat.entity.ManyChat;
 import com.dkm.manyChat.entity.ManyChatInfo;
 import com.dkm.manyChat.service.IManyChatInfoService;
+import com.dkm.manyChat.service.IManyChatService;
+import com.dkm.user.entity.User;
+import com.dkm.user.service.IUserService;
+import com.dkm.utils.DateUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -17,6 +24,7 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +44,15 @@ public class MqListener {
    @Autowired
    private IManyChatInfoService manyChatInfoService;
 
+   @Autowired
+   private RedisConfig redisConfig;
+
+   @Autowired
+   private IUserService userService;
+
+   @Autowired
+   private IManyChatService manyChatService;
+
    @RabbitHandler
    public void msg (@Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, String msgInfo, Channel channel) {
       log.info("通讯平台收到服务器的消息:" +msgInfo);
@@ -49,6 +66,55 @@ public class MqListener {
          log.info("rabbitMq接收业务平台的消息转换有误...");
          e.printStackTrace();
       }
+
+      ChatVo vo = new ChatVo();
+
+      //查询用户详细信息
+      if (info.getToId() != null) {
+         //单聊消息
+         User user = userService.queryUserById(info.getToId());
+         vo.setChatName(user.getNickName());
+         vo.setHeadUrl(user.getHeadUrl());
+         vo.setId(user.getId());
+         vo.setMsg(info.getMsg());
+         vo.setDate(DateUtil.formatDateTime(LocalDateTime.now()));
+      }
+
+      if (info.getManyChatId() != null) {
+         //群聊消息
+         ManyChat manyChat = manyChatService.queryById(info.getManyChatId());
+         vo.setMsg(info.getMsg());
+         vo.setId(manyChat.getId());
+         vo.setChatName(manyChat.getManyName());
+         vo.setDate(DateUtil.formatDateTime(LocalDateTime.now()));
+         //头像
+         vo.setHeadUrl(manyChat.getHeadUrl());
+      }
+
+
+      //生成key
+      Long id = info.getFromId() + 2020;
+
+      List<Object> redisConfigList = redisConfig.getList(id);
+
+      if (null == redisConfigList || redisConfigList.size() == 0) {
+         //第一次存入
+         List<Object> list = new ArrayList<>();
+         list.add(vo);
+         redisConfig.setLeftList(id, list);
+      } else {
+         //不是第一次存入
+         ChatVo chatVo;
+         for (Object list : redisConfigList) {
+            chatVo = (ChatVo) list;
+            if (chatVo.getId().equals(info.getToId())) {
+               redisConfigList.remove(list);
+            }
+         }
+         redisConfigList.add(vo);
+         redisConfig.setLeftList(id, redisConfigList);
+      }
+
 
       if (info.getType() == 4) {
          //群聊消息

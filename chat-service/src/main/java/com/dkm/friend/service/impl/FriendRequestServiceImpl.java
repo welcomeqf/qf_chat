@@ -145,6 +145,10 @@ public class FriendRequestServiceImpl extends ServiceImpl<FriendRequestMapper, F
 
       List<FriendRequest> list = baseMapper.selectList(wrapper);
 
+      if (null == list || list.size() == 0) {
+         return null;
+      }
+
       List<IdVo> voList = new ArrayList<>();
       for (FriendRequest request : list) {
          IdVo vo = new IdVo();

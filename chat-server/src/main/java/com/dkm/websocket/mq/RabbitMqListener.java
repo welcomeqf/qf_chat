@@ -77,6 +77,11 @@ public class RabbitMqListener {
          //找到对应的通道
          if (cid == null || "".equals(cid)) {
             log.error("redis中未找到对应的设备ID");
+            try {
+               mqChannel.basicAck(deliveryTag,true);
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
             return;
          }
          Channel channel = groupUtils.getChannel(cid);
@@ -85,6 +90,11 @@ public class RabbitMqListener {
             //对方未在线，应存入rabbitMQ消息队列中，等待客户端的连接再发送消息
             //存入一个新的队列中
             log.info("未找到对应的channel,有可能是对方未在线,将消息通过mq发送存入数据库");
+            try {
+               mqChannel.basicAck(deliveryTag,true);
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
             rabbitTemplate.convertAndSend("msg_not_online_queue",msg);
          }
 
@@ -193,6 +203,11 @@ public class RabbitMqListener {
          //找到对应的通道
          if (cid == null || "".equals(cid)) {
             log.error("redis中未找到对应的设备ID");
+            try {
+               mqChannel.basicAck(deliveryTag,true);
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
             return;
          }
          Channel channel = groupUtils.getChannel(cid);
@@ -201,6 +216,11 @@ public class RabbitMqListener {
             //对方未在线，应存入rabbitMQ消息队列中，等待客户端的连接再发送消息
             //存入一个新的队列中
             log.info("未找到对应的channel,有可能是对方未在线,将消息通过mq发送存入数据库");
+            try {
+               mqChannel.basicAck(deliveryTag,true);
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
             rabbitTemplate.convertAndSend("msg_not_online_queue",msg);
          }
 

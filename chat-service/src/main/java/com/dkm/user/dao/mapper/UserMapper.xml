@@ -5,9 +5,10 @@
 
 
     <select id="queryAllFriend" parameterType="com.dkm.friend.entity.vo.IdVo" resultType="com.dkm.friend.entity.vo.FriendAllListVo">
-        <foreach collection="list" item="item" index="index">
-            select id as 'toId',nick_name as 'nickName',head_url as 'headUrl'
-            from tb_user where id = #{item.fromId}
+        select id as 'toId',nick_name as 'nickName',head_url as 'headUrl'
+        from tb_user where
+        <foreach collection="list" item="item" index="index" separator="or">
+             id = #{item.fromId}
         </foreach>
     </select>
 

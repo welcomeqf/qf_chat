@@ -32,6 +32,7 @@ public class ManyChatController {
    @ApiOperation(value = "建立群聊", notes = "建立群聊")
    @ApiImplicitParams({
          @ApiImplicitParam(name = "manyName", value = "群聊名字", required = true, dataType = "String", paramType = "path"),
+         @ApiImplicitParam(name = "manyHeadUrl", value = "群聊头像", required = true, dataType = "String", paramType = "path"),
          @ApiImplicitParam(name = "list", value = "id集合", required = true, dataType = "list", paramType = "path"),
    })
    @CrossOrigin
@@ -39,7 +40,7 @@ public class ManyChatController {
    @PostMapping("/insertManyChat")
    public ResultVo insertManyChat (@RequestBody ManyChatVo vo) {
 
-      if (StringUtils.isBlank(vo.getManyName())) {
+      if (StringUtils.isBlank(vo.getManyName()) || StringUtils.isBlank(vo.getManyHeadUrl())) {
          throw new ApplicationException(CodeType.PARAMETER_ERROR, "群聊名字不能为空");
       }
 

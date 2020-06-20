@@ -63,6 +63,7 @@ public class ManyChatServiceImpl extends ServiceImpl<ManyChatMapper, ManyChat> i
       //生成群聊二维码
       FileVo qrCode = fileService.getQrCode(qrCodeUrl + "?manyChatId=" + manyChatId);
       manyChat.setManyQrCode(qrCode.getFileUrl());
+      manyChat.setHeadUrl(vo.getManyHeadUrl());
 
       int insert = baseMapper.insert(manyChat);
 
@@ -92,5 +93,10 @@ public class ManyChatServiceImpl extends ServiceImpl<ManyChatMapper, ManyChat> i
 
       manyChatInfoService.insertAllUser(list);
 
+   }
+
+   @Override
+   public ManyChat queryById(Long id) {
+      return baseMapper.selectById(id);
    }
 }
