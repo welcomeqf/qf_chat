@@ -6,6 +6,7 @@ import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
 import com.dkm.jwt.islogin.CheckToken;
+import com.dkm.listener.vo.ChatVo;
 import com.dkm.user.entity.User;
 import com.dkm.user.entity.vo.*;
 import com.dkm.user.service.IUserService;
@@ -15,9 +16,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,12 +37,6 @@ public class UserController {
 
    @Autowired
    private IUserService userService;
-
-   @Autowired
-   private RedisConfig redisConfig;
-
-   @Autowired
-   private LocalUser localUser;
 
 
    @ApiOperation(value = "注册用户", notes = "注册用户")
@@ -177,18 +174,5 @@ public class UserController {
       return userService.queryUserByName(userName);
    }
 
-
-   @ApiOperation(value = "查询消息列表页", notes = "查询消息列表页")
-   @GetMapping("/queryMsg")
-   @CrossOrigin
-   @CheckToken
-   public List<Object> queryMsg () {
-
-      UserLoginQuery user = localUser.getUser();
-
-      Long id = user.getId() + 2020;
-
-      return redisConfig.getList(id);
-   }
 
 }

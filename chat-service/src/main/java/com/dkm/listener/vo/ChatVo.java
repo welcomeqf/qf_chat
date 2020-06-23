@@ -2,13 +2,15 @@ package com.dkm.listener.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author qf
  * @date 2020/6/20
  * @vesion 1.0
  **/
 @Data
-public class ChatVo {
+public class ChatVo implements Serializable {
 
 
    /**

@@ -45,9 +45,6 @@ public class MqListener {
    private IManyChatInfoService manyChatInfoService;
 
    @Autowired
-   private RedisConfig redisConfig;
-
-   @Autowired
    private IUserService userService;
 
    @Autowired
@@ -90,31 +87,6 @@ public class MqListener {
          //头像
          vo.setHeadUrl(manyChat.getHeadUrl());
       }
-
-
-      //生成key
-      Long id = info.getFromId() + 2020;
-
-      List<Object> redisConfigList = redisConfig.getList(id);
-
-      if (null == redisConfigList || redisConfigList.size() == 0) {
-         //第一次存入
-         List<Object> list = new ArrayList<>();
-         list.add(vo);
-         redisConfig.setLeftList(id, list);
-      } else {
-         //不是第一次存入
-         ChatVo chatVo;
-         for (Object list : redisConfigList) {
-            chatVo = (ChatVo) list;
-            if (chatVo.getId().equals(info.getToId())) {
-               redisConfigList.remove(list);
-            }
-         }
-         redisConfigList.add(vo);
-         redisConfig.setLeftList(id, redisConfigList);
-      }
-
 
       if (info.getType() == 4) {
          //群聊消息

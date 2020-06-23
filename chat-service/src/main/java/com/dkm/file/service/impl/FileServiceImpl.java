@@ -130,8 +130,8 @@ public class FileServiceImpl implements IFileService {
          }
          newPath = path.toString() + extraName;
 
-//         String url = fileUrl + "/" + fileName.substring(0, 8) + "/"  + fileName + extraName;
-         String url = fileLocalUrl + fileName.substring(0, 8) + "/"  + fileName + extraName;
+         String url = fileUrl + "/" + fileName.substring(0, 8) + "/"  + fileName + extraName;
+//         String url = fileLocalUrl + fileName.substring(0, 8) + "/"  + fileName + extraName;
          vo.setFileUrl(url);
 
       }
