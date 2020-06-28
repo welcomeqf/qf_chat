@@ -6,9 +6,11 @@ import com.dkm.constanct.CodeType;
 import com.dkm.entity.websocket.MsgInfo;
 import com.dkm.exception.ApplicationException;
 import com.dkm.utils.StringUtils;
+import com.dkm.websocket.entity.SendMsg;
 import com.dkm.websocket.utils.ChannelManyGroups;
 import com.dkm.websocket.utils.GroupUtils;
 import com.dkm.websocket.utils.RSAUtils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import io.netty.channel.Channel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -101,12 +104,12 @@ public class RabbitMqListener {
          //将消息发送给客户端
          if (channel != null) {
             log.info("发送单聊消息:" + msgInfo);
-            String encrypt = null;
-            try {
-               encrypt = rsaUtils.encrypt(JSON.toJSONString(msgInfo), myPublicKey);
-            } catch (Exception e) {
-               e.printStackTrace();
-            }
+//            String encrypt = null;
+//            try {
+//               encrypt = rsaUtils.encrypt(JSON.toJSONString(msgInfo), myPublicKey);
+//            } catch (Exception e) {
+//               e.printStackTrace();
+//            }
             channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(msgInfo)));
 
             try {
@@ -138,15 +141,18 @@ public class RabbitMqListener {
          //将建立群聊的channel管理起来
          channelManyGroups.addList(channels);
 
+         SendMsg sendMsg = new SendMsg();
+         BeanUtils.copyProperties(msgInfo,sendMsg);
+
          //将消息群发
-         log.info("消息群发:" +msgInfo);
-         String encrypt = null;
-         try {
-            encrypt = rsaUtils.encrypt(JSON.toJSONString(msgInfo), myPublicKey);
-         } catch (Exception e) {
-            e.printStackTrace();
-         }
-         channelManyGroups.broadcast(new TextWebSocketFrame(JSON.toJSONString(msgInfo)));
+         log.info("消息群发:" +sendMsg);
+//         String encrypt = null;
+//         try {
+//            encrypt = rsaUtils.encrypt(JSON.toJSONString(msgInfo), myPublicKey);
+//         } catch (Exception e) {
+//            e.printStackTrace();
+//         }
+         channelManyGroups.broadcast(new TextWebSocketFrame(JSON.toJSONString(sendMsg)));
 
 
          try {
@@ -169,12 +175,12 @@ public class RabbitMqListener {
             //将消息发送给客户端
             if (channel != null) {
                log.info("挤下线:" + msgInfo);
-               String encrypt = null;
-               try {
-                  encrypt = rsaUtils.encrypt(JSON.toJSONString(msgInfo), myPublicKey);
-               } catch (Exception e) {
-                  e.printStackTrace();
-               }
+//               String encrypt = null;
+//               try {
+//                  encrypt = rsaUtils.encrypt(JSON.toJSONString(msgInfo), myPublicKey);
+//               } catch (Exception e) {
+//                  e.printStackTrace();
+//               }
                channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(msgInfo)));
 
                if (msgInfo.getCid() != null) {
@@ -227,12 +233,12 @@ public class RabbitMqListener {
          //将消息发送给客户端
          if (channel != null) {
             log.info("发送加好友消息:" + msgInfo);
-            String encrypt = null;
-            try {
-               encrypt = rsaUtils.encrypt(JSON.toJSONString(msgInfo), myPublicKey);
-            } catch (Exception e) {
-               e.printStackTrace();
-            }
+//            String encrypt = null;
+//            try {
+//               encrypt = rsaUtils.encrypt(JSON.toJSONString(msgInfo), myPublicKey);
+//            } catch (Exception e) {
+//               e.printStackTrace();
+//            }
             channel.writeAndFlush(new TextWebSocketFrame(JSON.toJSONString(msgInfo)));
 
             try {
