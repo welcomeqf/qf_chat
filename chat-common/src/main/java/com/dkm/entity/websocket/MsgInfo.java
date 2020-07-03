@@ -67,4 +67,9 @@ public class MsgInfo {
     * 发送Id的集合
     */
    private List<Long> toIdList;
+
+   /**
+    *  语音发送时长
+    */
+   private String sendTime;
 }

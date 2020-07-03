@@ -63,7 +63,6 @@ public class RabbitMqListener {
    @RabbitHandler
    public void rabbitHandle (String msg, com.rabbitmq.client.Channel mqChannel, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag) {
 
-      log.info("-->收到mq消息;" + msg);
       MsgInfo msgInfo = null;
       try {
          msgInfo = JSONObject.parseObject(msg, MsgInfo.class);
@@ -85,6 +84,7 @@ public class RabbitMqListener {
             } catch (IOException e) {
                e.printStackTrace();
             }
+            rabbitTemplate.convertAndSend("chat_msg_not_online_queue",msg);
             return;
          }
          Channel channel = groupUtils.getChannel(cid);
@@ -98,7 +98,7 @@ public class RabbitMqListener {
             } catch (IOException e) {
                e.printStackTrace();
             }
-            rabbitTemplate.convertAndSend("msg_not_online_queue",msg);
+            rabbitTemplate.convertAndSend("chat_msg_not_online_queue",msg);
          }
 
          //将消息发送给客户端
@@ -227,7 +227,7 @@ public class RabbitMqListener {
             } catch (IOException e) {
                e.printStackTrace();
             }
-            rabbitTemplate.convertAndSend("msg_not_online_queue",msg);
+            rabbitTemplate.convertAndSend("chat_msg_not_online_queue",msg);
          }
 
          //将消息发送给客户端

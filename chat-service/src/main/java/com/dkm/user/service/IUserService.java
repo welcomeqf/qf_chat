@@ -76,4 +76,9 @@ public interface IUserService {
     */
    User queryUserByName (String userName);
 
+   /**
+    *  上线触发离线消息
+    */
+   void getNotOnlineInfo ();
+
 }

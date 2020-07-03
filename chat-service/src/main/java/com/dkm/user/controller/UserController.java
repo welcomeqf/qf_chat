@@ -175,4 +175,12 @@ public class UserController {
    }
 
 
+   @ApiOperation(value = "触发离线消息", notes = "触发离线消息")
+   @GetMapping("/getNotOnlineInfo")
+   @CrossOrigin
+   @CheckToken
+   public void getNotOnlineInfo () {
+      userService.getNotOnlineInfo();
+   }
+
 }
