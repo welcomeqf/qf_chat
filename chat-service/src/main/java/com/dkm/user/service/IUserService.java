@@ -1,5 +1,6 @@
 package com.dkm.user.service;
 
+import com.dkm.entity.websocket.MsgInfo;
 import com.dkm.friend.entity.vo.FriendAllListVo;
 import com.dkm.friend.entity.vo.IdVo;
 import com.dkm.user.entity.User;
@@ -79,6 +80,6 @@ public interface IUserService {
    /**
     *  上线触发离线消息
     */
-   void getNotOnlineInfo ();
+   List<MsgInfo> getNotOnlineInfo ();
 
 }

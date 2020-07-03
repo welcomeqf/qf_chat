@@ -2,6 +2,7 @@ package com.dkm.user.controller;
 
 import com.dkm.config.RedisConfig;
 import com.dkm.constanct.CodeType;
+import com.dkm.entity.websocket.MsgInfo;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.contain.LocalUser;
 import com.dkm.jwt.entity.UserLoginQuery;
@@ -179,8 +180,8 @@ public class UserController {
    @GetMapping("/getNotOnlineInfo")
    @CrossOrigin
    @CheckToken
-   public void getNotOnlineInfo () {
-      userService.getNotOnlineInfo();
+   public List<MsgInfo> getNotOnlineInfo () {
+      return userService.getNotOnlineInfo();
    }
 
 }

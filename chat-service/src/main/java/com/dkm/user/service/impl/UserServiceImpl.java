@@ -157,22 +157,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
       if (null != list && list.size() != 0) {
          //有离线消息,当前该账号未在线，将未在线消息发送给客户端
-         List<Long> longList = new ArrayList<>();
-         for (FriendNotOnlineVo onlineVo : list) {
-            MsgInfo msgInfo = new MsgInfo();
-            msgInfo.setFromId(onlineVo.getFromId());
-            msgInfo.setToId(onlineVo.getToId());
-            msgInfo.setMsg(onlineVo.getContent());
-            msgInfo.setSendDate(onlineVo.getCreateDate());
-            //离线信息
-            msgInfo.setType(onlineVo.getType());
-            //将消息更改成已读
-            longList.add(onlineVo.getToId());
-            rabbitTemplate.convertAndSend("chat_msg_fanoutExchange","",JSON.toJSONString(msgInfo));
-         }
-
-         //删除离线表中的未读状态
-         friendNotOnlineService.deleteLook(longList);
+//         List<Long> longList = new ArrayList<>();
+//         for (FriendNotOnlineVo onlineVo : list) {
+//            MsgInfo msgInfo = new MsgInfo();
+//            msgInfo.setFromId(onlineVo.getFromId());
+//            msgInfo.setToId(onlineVo.getToId());
+//            msgInfo.setMsg(onlineVo.getContent());
+//            msgInfo.setSendDate(onlineVo.getCreateDate());
+//            //离线信息
+//            msgInfo.setType(onlineVo.getType());
+//            //将消息更改成已读
+//            longList.add(onlineVo.getToId());
+//            rabbitTemplate.convertAndSend("chat_msg_fanoutExchange","",JSON.toJSONString(msgInfo));
+//         }
+//
+//         //删除离线表中的未读状态
+//         friendNotOnlineService.deleteLook(longList);
 
       } else {
          //没有离线消息,
@@ -327,11 +327,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
    }
 
    @Override
-   public void getNotOnlineInfo() {
+   public List<MsgInfo> getNotOnlineInfo() {
 
       UserLoginQuery user = localUser.getUser();
 
+      System.out.println("userId-->" + user.getId());
+
       List<FriendNotOnlineVo> list = friendNotOnlineService.queryOne(user.getId());
+
+      List<MsgInfo> msgInfoList = new ArrayList<>();
 
       if (null != list && list.size() != 0) {
          //有离线消息,当前该账号未在线，将未在线消息发送给客户端
@@ -344,14 +348,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             msgInfo.setSendDate(onlineVo.getCreateDate());
             //离线信息
             msgInfo.setType(onlineVo.getType());
+            msgInfoList.add(msgInfo);
             //将消息更改成已读
             longList.add(onlineVo.getToId());
-            rabbitTemplate.convertAndSend("chat_msg_fanoutExchange","",JSON.toJSONString(msgInfo));
          }
 
          //删除离线表中的未读状态
          friendNotOnlineService.deleteLook(longList);
 
       }
+
+      return msgInfoList;
    }
 }

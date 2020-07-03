@@ -48,7 +48,6 @@ public class FriendNotOnlineServiceImpl extends ServiceImpl<FriendNotOnlineMappe
 
       List<FriendNotOnline> list = baseMapper.selectList(wrapper);
 
-
       if (null != list && list.size() != 0) {
          List<FriendNotOnlineVo> result = new ArrayList<>();
 
