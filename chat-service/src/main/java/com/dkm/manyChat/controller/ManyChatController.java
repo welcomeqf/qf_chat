@@ -3,15 +3,19 @@ package com.dkm.manyChat.controller;
 import com.dkm.constanct.CodeType;
 import com.dkm.exception.ApplicationException;
 import com.dkm.jwt.islogin.CheckToken;
+import com.dkm.manyChat.entity.ManyChat;
+import com.dkm.manyChat.entity.vo.ManyChatResultVo;
 import com.dkm.manyChat.entity.vo.ManyChatVo;
 import com.dkm.manyChat.service.IManyChatService;
 import com.dkm.user.entity.vo.ResultVo;
+import com.dkm.utils.DateUtil;
 import com.dkm.utils.StringUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +54,27 @@ public class ManyChatController {
       resultVo.setResult("ok");
 
       return resultVo;
+   }
+
+
+   @ApiOperation(value = "根据群聊id查询群聊信息", notes = "根据群聊id查询群聊信息")
+   @ApiImplicitParam(name = "id", value = "群聊id", required = true, dataType = "Long", paramType = "path")
+   @CrossOrigin
+   @CheckToken
+   @GetMapping("/queryById")
+   public ManyChatResultVo queryById (@RequestParam("id") Long id) {
+
+      if (id == null) {
+         throw new ApplicationException(CodeType.PARAMETER_ERROR);
+      }
+
+      ManyChatResultVo vo = new ManyChatResultVo();
+
+      ManyChat manyChat = manyChatService.queryById(id);
+
+      BeanUtils.copyProperties(manyChat, vo);
+      vo.setCreateDate(DateUtil.formatDateTime(manyChat.getCreateDate()));
+
+      return vo;
    }
 }
