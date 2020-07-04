@@ -11,6 +11,7 @@ import com.dkm.friend.service.IFriendNotOnlineService;
 import com.dkm.utils.DateUtil;
 import com.dkm.utils.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,10 +54,7 @@ public class FriendNotOnlineServiceImpl extends ServiceImpl<FriendNotOnlineMappe
 
          for (FriendNotOnline online : list) {
             FriendNotOnlineVo vo = new FriendNotOnlineVo();
-            vo.setFromId(online.getFromId());
-            vo.setToId(online.getToId());
-            vo.setContent(online.getContent());
-            vo.setType(online.getType());
+            BeanUtils.copyProperties(online, vo);
             vo.setCreateDate(DateUtil.formatDateTime(online.getCreateDate()));
             result.add(vo);
          }
@@ -83,6 +81,11 @@ public class FriendNotOnlineServiceImpl extends ServiceImpl<FriendNotOnlineMappe
       friendNotOnline.setCreateDate(LocalDateTime.now());
       friendNotOnline.setType(vo.getType());
       friendNotOnline.setIsLook(0);
+
+      friendNotOnline.setCid(vo.getCid());
+      friendNotOnline.setManyChatId(vo.getManyChatId());
+      friendNotOnline.setMsgType(vo.getMsgType());
+      friendNotOnline.setSendTime(vo.getSendTime());
 
       int insert = baseMapper.insert(friendNotOnline);
 

@@ -30,6 +30,7 @@ import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -331,8 +332,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
       UserLoginQuery user = localUser.getUser();
 
-      System.out.println("userId-->" + user.getId());
-
       List<FriendNotOnlineVo> list = friendNotOnlineService.queryOne(user.getId());
 
       List<MsgInfo> msgInfoList = new ArrayList<>();
@@ -342,12 +341,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
          List<Long> longList = new ArrayList<>();
          for (FriendNotOnlineVo onlineVo : list) {
             MsgInfo msgInfo = new MsgInfo();
-            msgInfo.setFromId(onlineVo.getFromId());
-            msgInfo.setToId(onlineVo.getToId());
+            BeanUtils.copyProperties(onlineVo, msgInfo);
+
+            //离线消息
             msgInfo.setMsg(onlineVo.getContent());
             msgInfo.setSendDate(onlineVo.getCreateDate());
-            //离线信息
-            msgInfo.setType(onlineVo.getType());
+
             msgInfoList.add(msgInfo);
             //将消息更改成已读
             longList.add(onlineVo.getToId());

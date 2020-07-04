@@ -52,6 +52,11 @@ public class MqNotOnlineListener {
          vo.setContent(msg.getMsg());
          vo.setType(msg.getType());
 
+         vo.setCid(msg.getCid());
+         vo.setManyChatId(msg.getManyChatId());
+         vo.setMsgType(msg.getMsgType());
+         vo.setSendTime(msg.getSendTime());
+
          friendNotOnlineService.insertNotOnline(vo);
 
          //确认消息

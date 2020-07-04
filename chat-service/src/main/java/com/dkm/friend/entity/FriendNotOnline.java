@@ -55,6 +55,28 @@ public class FriendNotOnline extends Model<FriendNotOnline> {
    private Integer type;
 
    /**
+    * 设备id
+    */
+   private String cid;
+
+   /**
+    * 群聊id
+    */
+   private Long manyChatId;
+
+   /**
+    * 1--文本
+    * 2--图片
+    * 3--音频
+    */
+   private Integer msgType;
+
+   /**
+    *  语音发送时长
+    */
+   private String sendTime;
+
+   /**
     * 是否查看
     * 0--未查看
     * 1--已查看
